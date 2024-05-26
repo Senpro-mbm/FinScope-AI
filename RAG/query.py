@@ -37,21 +37,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 
 # 5 - Apply the .split_document command
 chunks = text_splitter.split_documents(data[1:30])
-print("Multiple PDFs - Now you have {0} number of chunks.".format(len(chunks)))
 
-print(chunks)
-
-# Create a list of token counts
-token_counts = [count_tokens(chunk.page_content) for chunk in chunks]
-
-# Create a DataFrame from the token counts
-df = pd.DataFrame({'Token Count': token_counts})
-
-# Create a histogram of the token count distribution
-df.hist(bins=40, )
-
-# Show the plot
-plt.show()
 
 from langchain.vectorstores import FAISS  # for the vector database part -- FAISS is local and temporal, Pinecone is cloud-
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -65,21 +51,6 @@ from langchain.schema import HumanMessage, SystemMessage, AIMessage
 chatgpt = ChatOpenAI(model_name = "gpt-3.5-turbo",
                   temperature=0
                  )
-
-high_level_behavior = """
-                       You are an AI bot that help people decide where to travel.
-                       Always recommend three destination with a short sentence for each.
-                      """
-
-response = chatgpt(
-    [
-        SystemMessage(content=high_level_behavior),
-        AIMessage(content="Hello! I am a traveller assistant, how can I help you?"),
-        HumanMessage(content="Where should I travel next?"),
-    ]
-)
-
-print(response.content)
 
 # 1. Create vector database with FAISS
 db_FAISS = FAISS.from_documents(chunks, embeddings)
