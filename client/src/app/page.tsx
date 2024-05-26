@@ -21,8 +21,8 @@ export default function Home() {
   return (
     <>
       <Splash />
-      <div className="flex flex-col my-16 gap-y-8 ">
-        <div className="p-12">
+      <div className="flex flex-col my-16 gap-y-8">
+        <div className="px-12">
           <Description />
         </div>
         <div>

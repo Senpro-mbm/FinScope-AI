@@ -22,10 +22,12 @@ interface StockData {
 export default function UploadPage() {
   const router = useRouter();
 
-  const [feature, setFeature] = useState<Features>(Features.Feature2);
+  const [feature, setFeature] = useState<Features>(Features.Feature1);
   const [file, setFile] = useState<File | undefined>(undefined);
   const [stocks, setStocks] = useState<StockData[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<(StockData | null)[]>([null]);
+
+  const [uploadingFileStatus, setUploadingFileStatus] = useState<boolean>(false);
 
   const fetchStocks = () => {
     fetch("/api/stocks")
@@ -55,29 +57,34 @@ export default function UploadPage() {
     }
   };
   const handleSubmit = async () => {
-    // if (process.env.NEXT_PUBLIC_BACKEND_API_ORIGIN === undefined) {
-    //   alert("Error uploading file");
-    //   return;
-    // }
+    if (process.env.NEXT_PUBLIC_BACKEND_API_ORIGIN === undefined) {
+      alert("Error uploading file");
+      return;
+    }
     if (feature == Features.Feature1) {
       if (!file) return;
       const formData = new FormData();
       formData.append("file", file);
       try {
-        const response = await fetch("/api/upload", {
+        setUploadingFileStatus(true);
+        const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_API_ORIGIN + "/upload", {
           method: "POST",
-          body: await file.arrayBuffer(),
+          body: formData,
         });
+
+        setUploadingFileStatus(false);
 
         if (response.ok) {
           const data = await response.json();
-          if (data.id) router.push("/result?id=" + data.id);
+          if (data.file_name) router.push("/result?id=" + data.file_name);
         } else alert("Upload failed");
       } catch (e) {
         console.error("Error:", e);
         alert("Error uploading file");
       }
     } else if (feature == Features.Feature2) {
+        if (selectedCompanies.length < 2) return;
+        router.push("/result?stocks=" + selectedCompanies.map(company => company?.name).filter(x => x).join(","));
     }
   };
   const handleCompanyChange = (index: number, event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -178,12 +185,12 @@ export default function UploadPage() {
         <button
           className="text-white bg-neutral-800 w-full py-2 rounded-lg enabled:hover:bg-neutral-900 disabled:opacity-50"
           disabled={
-            (feature == Features.Feature1 && file == undefined) ||
+            (feature == Features.Feature1 && (file == undefined || uploadingFileStatus)) ||
             (feature == Features.Feature2 && selectedCompanies.length < 2)
           }
           onClick={handleSubmit}
         >
-          Upload
+          {feature == Features.Feature1 ? (uploadingFileStatus ? "Uploading..." : "Upload") : "Submit"}
         </button>
       </div>
     </>

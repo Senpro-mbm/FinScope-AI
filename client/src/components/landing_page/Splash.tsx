@@ -62,9 +62,8 @@ export default function Splash() {
       <div className="absolute bottom-0 w-full h-full xs:hidden">{generateBackground(size.width ?? 1440, 500)}</div>
       <div className="relative z-10 flex flex-col items-center p-16">
         <p className="font-bold text-4xl text-neutral-100 lg:text-6xl mb-8">FinScope AI</p>
-        <p className="text-lg text-wrap text-center text-neutral-100 md:max-w-[60%] mb-8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua
+        <p className="text-lg text-wrap text-center text-neutral-100 md:max-w-[80%] mb-8">
+        Let our AI assistant analyze company financials and craft your investment strategy.
         </p>
         <Link href="/upload">
           <button className="text-black bg-secondary-400 px-32 py-2 rounded-lg hover:bg-secondary-600">Start</button>
