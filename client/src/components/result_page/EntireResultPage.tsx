@@ -33,14 +33,15 @@ export default function EntireResultPage() {
   async function fetchStockResult(stocks: string) {
     console.log("Fetching result...");
     const stockList = stocks.split(",");
+    const body = {
+      stock_symbols: stockList,
+    };
     const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_API_ORIGIN + "/calculates", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        stock_symbols: stockList,
-      }),
+      body: JSON.stringify(body),
     });
     if (response.status != 200) return;
     const data = await response.json();

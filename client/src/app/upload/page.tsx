@@ -77,7 +77,11 @@ export default function UploadPage() {
         if (response.ok) {
           const data = await response.json();
           if (data.file_name) router.push("/result?id=" + data.file_name);
-        } else alert("Upload failed");
+        } else {
+            const data = await response.json();
+            console.log(data);
+            alert("Upload failed");
+        }
       } catch (e) {
         console.error("Error:", e);
         alert("Error uploading file");
