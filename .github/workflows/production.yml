@@ -21,6 +21,7 @@ jobs:
         working-directory: ./client
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
+            NEXT_PUBLIC_BACKEND_API_ORIGIN: ${{ secrets.NEXT_PUBLIC_BACKEND_API_ORIGIN }}
             MONGODB_URI: ${{ secrets.MONGODB_URI }}
       - name: Deploy Project Artifacts to Vercel
         working-directory: ./client
