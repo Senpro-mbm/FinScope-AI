@@ -23,10 +23,9 @@ export default function EntireResultPage() {
   async function fetchResult(id: string) {
     console.log("Fetching result...");
     const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_API_ORIGIN + "/upload_and_search?file_name=" + id);
-    // if (response.status != 200) return;
+    if (response.status != 200) return;
     const data = await response.json();
     // console.log(data);
-
     if (!data.search_results) return;
     setResult(data.search_results);
   }
@@ -43,7 +42,7 @@ export default function EntireResultPage() {
         stock_symbols: stockList,
       }),
     });
-    // if (response.status != 200) return;
+    if (response.status != 200) return;
     const data = await response.json();
     setResult(data);
   }
@@ -65,7 +64,8 @@ export default function EntireResultPage() {
             <p className="text-lg">Try refreshing this page after a few minutes.</p>
           </div>
         ) : (
-          <Markdown skipHtml={false}>{result}</Markdown>
+          //   <Markdown skipHtml={false}>{result}</Markdown>
+          <p>{result}</p>
         )}
       </div>
       <Link href="/upload">
