@@ -12,8 +12,10 @@ import Markdown from "react-markdown";
 export default function EntireResultPage() {
   const searchParams = useSearchParams();
   const [result, setResult] = useState<string | undefined>(undefined);
+  const [isWaitingResponse, setWaitingResponse] = useState<boolean>(false);
 
   useEffect(() => {
+    if (isWaitingResponse) return; // prevent double request
     const id = searchParams.get("id");
     const stocks = searchParams.get("stocks");
     if (id) fetchResult(id);
@@ -65,8 +67,8 @@ export default function EntireResultPage() {
             <p className="text-lg">Try refreshing this page after a few minutes.</p>
           </div>
         ) : (
-          //   <Markdown skipHtml={false}>{result}</Markdown>
-          <p>{result}</p>
+            <Markdown skipHtml={false}>{result}</Markdown>
+        //   <p>{result}</p>
         )}
       </div>
       <Link href="/upload">
